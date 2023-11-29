@@ -19,6 +19,8 @@
       }
     ],
     "paths": {
+      "@/icons/*": ["./public/Icons/*"],
+      "@/backgrounds/*": ["./public/backgrounds/*"],
       "@/*": ["./*"]
     }
   },
