@@ -10,24 +10,74 @@ interface timerButtonProps {
 
 export default function Timer() {
 
-    var mock = ['00', '00']
-
-    const [minutes, seconds] = mock;
+    const [minutes, setMinutes] = useState('00')
+    const [seconds, setSeconds] = useState('00')
+    const [time, setTime] = useState(5000)
+    const [isRunning, setIsRunning] = useState(false)
     
-    function timer (time: number) {
+    useEffect(() => {
+        let intervalId: ReturnType <typeof setInterval>
 
-    }
+        if (isRunning) {
+            intervalId = setInterval(() => {
+                if (time === 0) {
+                    clearInterval(intervalId)
+                }
+                else{
+                    setTime((prevTime) => prevTime - 1000)
+                }
+            }, 1000)
+        }
 
-    function startTimer () {
+        return () => {
+            intervalId ? clearInterval(intervalId) : null
+        }
+      
+    }, [isRunning])
 
-    }
+    useEffect(() => {
+
+
+    }, [time])
 
     function playButtonHandler () {
+        if (isRunning) {
+            stopTimer()
+        }
+        else {
+            startTimer()
+        }
     }
+    function startTimer () {
+        setIsRunning(true)
+    }
+    function stopTimer () {
+        setIsRunning(false)
+    }
+    function resetTimer () {
+    }
+    
 
     function convertTimeMsToString (time: number) {
+
+        const minutes = Math.floor((time / 1000) / 60)
+        const seconds = Math.floor((time / 1000) % 60)
+
+        const formatedMinutes = minutes.toString().padStart(2, '0')
+        const formatedSeconds = seconds.toString().padStart(2, '0')
+
+        return [formatedMinutes, formatedSeconds]
     }
-    function convertTimeStringToMs (minutes: string, seconds: string) {
+    function convertTimeStringToMs (minutes: string, seconds: string) : number {
+
+        const parsedMinutes = parseInt(minutes, 10)
+        const parsedSeconds = parseInt(seconds, 10)
+
+        if (isNaN(parsedMinutes) || isNaN(parsedSeconds)) {
+            throw new Error('Invalid input')
+        }
+
+        return parsedMinutes * 60000 + parsedSeconds * 1000
     }
 
     return(
