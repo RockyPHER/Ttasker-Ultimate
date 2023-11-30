@@ -15,17 +15,20 @@ export default function Timer() {
     const [time, setTime] = useState(5000)
     const [isRunning, setIsRunning] = useState(false)
     
+    //Timer Logic
     useEffect(() => {
         let intervalId: ReturnType <typeof setInterval>
 
-        if (isRunning) {
+        if (isRunning && time > 0) {
             intervalId = setInterval(() => {
-                if (time === 0) {
-                    clearInterval(intervalId)
-                }
-                else{
-                    setTime((prevTime) => prevTime - 1000)
-                }
+                    setTime((prevTime) => {
+                        const newTime = prevTime - 1000
+                        if (newTime <= 0) {
+                            clearInterval(intervalId)
+                            return 0
+                        }
+                        return newTime
+                    })
             }, 1000)
         }
 
@@ -33,10 +36,13 @@ export default function Timer() {
             intervalId ? clearInterval(intervalId) : null
         }
       
-    }, [isRunning])
+    }, [isRunning, time])
 
+    //Timer Display
     useEffect(() => {
 
+        setMinutes(convertTimeMsToString(time)[0])
+        setSeconds(convertTimeMsToString(time)[1])
 
     }, [time])
 
