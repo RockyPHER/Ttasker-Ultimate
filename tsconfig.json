@@ -19,7 +19,7 @@
       }
     ],
     "paths": {
-      "@/icons/*": ["./public/Icons/*"],
+      "@/icons/*": ["./public/icons/*"],
       "@/backgrounds/*": ["./public/backgrounds/*"],
       "@/components/*": ["./app/ui/*"],
       "@/*": ["./*"]
