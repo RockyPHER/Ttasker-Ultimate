@@ -2,16 +2,24 @@
 
 import { useState, useEffect } from "react";
 
-export default function Task() {
+export function getTaskTime () : [string, string] {
+    var time : [string, string] = ["00", "10"];
 
-    var mockTitle = "Title";
-    var mockMinutes = "00";
-    var mockSeconds = "00";
+    return time;
+}
+
+function getTaskTitle () {
+    var title : string = "Title";
+
+    return title;
+}
+
+export default function Task() {
     var mockDescription = "Description";
 
-    const [title, setTitle] = useState(mockTitle);
-    const [minutes, setMinutes] = useState(mockMinutes);
-    const [seconds, setSeconds] = useState(mockSeconds);
+    const [title, setTitle] = useState(getTaskTitle());
+    const [minutes, setMinutes] = useState(getTaskTime()[0]);
+    const [seconds, setSeconds] = useState(getTaskTime()[1]);
     const [description, setDescription] = useState(mockDescription);
 
     const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +27,7 @@ export default function Task() {
 
     return (
         <div className="w-[300px] h-fit flex flex-col border-2 border-black rounded-md">
-            <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer m-1 p-2 rounded-md flex flex-row justify-between text-white bg-black bg-opacity-40">
+            <div onClick={() => setIsOpen(!isOpen)} className="cursor-pointer p-2 flex flex-row justify-between text-white bg-gray-600 bg-opacity-40">
                 <div className="">
                     {title}
                 </div>
