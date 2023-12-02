@@ -1,7 +1,7 @@
 "use client";
 
 import { parseTimeMsToString, parseTimeStringToMs } from "@/scripts/taskUtils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction, Dispatch } from "react";
 
 export interface ITask {
     id: string;
@@ -15,6 +15,12 @@ interface TaskProps {
     onUpdateTask: (task: ITask) => void;
 }
 
+interface TaskTimerProps {
+    setTimeFunc: Dispatch<SetStateAction<string>> 
+    UpdateTask: () => void
+    shownValue: string
+    timeParserFunc: (value: string) => string
+}
 
 export default function Task({ task, onUpdateTask }: TaskProps) {
 
@@ -51,15 +57,15 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
     return (
         <div className="w-[300px] h-fit flex flex-col border-2 border-black rounded-md">
             <div
-                onClick={() => setIsOpen(!isOpen)}
+                // onClick={() => setIsOpen(!isOpen)}
                 className="cursor-pointer p-2 flex flex-row justify-between text-white bg-gray-600 bg-opacity-40"
             >
                 
                 <input onBlur={updateTask} value={title} onChange={(e) => setTitle(e.target.value)} className="bg-transparent outline-none [appearance:textfield]"/>
                 <div className="flex px-1 bg-white bg-opacity-30 rounded-md">
-                    <input type="number" className="bg-transparent outline-none w-5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" onBlur={updateTask} value={minutes} onChange={(e) => setMinutes(parseTimeTo2Digits(e.target.value))} min={0} max={59} maxLength={2}/>
+                    <TaskTimer timeParserFunc={parseTimeTo2Digits} UpdateTask={updateTask} shownValue={minutes} setTimeFunc={setMinutes}/>
                     <span>:</span>
-                    <input type="number" className="bg-transparent outline-none w-5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" onBlur={updateTask} value={seconds} onChange={(e) => setSeconds(parseTimeTo2Digits(e.target.value))} min={0} max={59} maxLength={2}/>
+                    <TaskTimer timeParserFunc={parseTimeTo2Digits} UpdateTask={updateTask} shownValue={seconds} setTimeFunc={setSeconds}/>
                 </div>
             </div>
             {isOpen ? (
@@ -69,3 +75,9 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
     );
 }
 
+export function TaskTimer({setTimeFunc, UpdateTask, timeParserFunc, shownValue} : TaskTimerProps) {
+
+    return (
+        <input type="number" className="bg-transparent outline-none w-5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" onBlur={UpdateTask} value={shownValue} onChange={(e) => setTimeFunc(timeParserFunc(e.target.value))} min={0} max={59} maxLength={2}/>
+    )
+}
