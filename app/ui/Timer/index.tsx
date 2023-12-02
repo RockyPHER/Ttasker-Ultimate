@@ -2,16 +2,20 @@
 
 import React from "react";
 import { useState, useEffect } from "react";
-import PlayIcon from "@/icons/play.svg";
+import { parseTimeMsToString, parseTimeStringToMs } from "@/scripts/taskUtils";
+import { TimerButton } from "./TimerButton";
+import { ITask } from "../Task";
+import ActualTask from "../ActualTask";
 
 interface TimerProps {
-    taskTime: [string, string];
-}
-interface timerButtonProps {
-    onClickHandler: () => void;
+    task: ITask | null;
+    onNextTask: () => void;
+    onFinishTask: () => void;
 }
 
-export default function Timer({ taskTime }: TimerProps) {
+export default function Timer({ task, onNextTask, onFinishTask }: TimerProps) {
+    const taskTime = task?.time;
+
     const [minutes, setMinutes] = useState("00");
     const [seconds, setSeconds] = useState("00");
     const [time, setTime] = useState(0);
@@ -30,8 +34,10 @@ export default function Timer({ taskTime }: TimerProps) {
                     const newTime = prevTime - 1000;
                     if (newTime <= 0) {
                         console.log("Console: Timer is done\nConsole: isRunning set to false");
+
                         setIsRunning(false);
                         clearInterval(intervalId);
+                        onFinishTask();
                         return 0;
                     }
                     return newTime;
@@ -61,9 +67,14 @@ export default function Timer({ taskTime }: TimerProps) {
 
     function playButtonHandler() {
         console.log("Console: Button was clicked");
+        console.log(task);
+        if (!task){
+            onNextTask();
+            return;
+        }
         if (time === 0) {
             console.log("Console: Timer value was reset");
-            setTime(getTaskTimeMs(taskTime));
+            setTime(task.time);
         }
         if (isRunning) {
             stopTimer();
@@ -78,27 +89,6 @@ export default function Timer({ taskTime }: TimerProps) {
     function stopTimer() {
         setIsRunning(false);
     }
-    function resetTimer() { }
-
-    function parseTimeMsToString(time: number) {
-        const minutes = Math.floor(time / 1000 / 60);
-        const seconds = Math.floor((time / 1000) % 60);
-
-        const formatedMinutes = minutes.toString().padStart(2, "0");
-        const formatedSeconds = seconds.toString().padStart(2, "0");
-
-        return [formatedMinutes, formatedSeconds];
-    }
-    function parseTimeStringToMs(minutes: string, seconds: string): number {
-        const parsedMinutes = parseInt(minutes, 10);
-        const parsedSeconds = parseInt(seconds, 10);
-
-        if (isNaN(parsedMinutes) || isNaN(parsedSeconds)) {
-            throw new Error("Invalid input");
-        }
-
-        return parsedMinutes * 60000 + parsedSeconds * 1000;
-    }
 
     return (
         <div className="flex flex-col space-y-5">
@@ -108,21 +98,10 @@ export default function Timer({ taskTime }: TimerProps) {
                 <span className="text-[25vh]">{seconds}</span>
             </div>
             <div>
-                <TimerButton onClickHandler={playButtonHandler} />
+                <TimerButton onClickHandler={playButtonHandler} isPlaying={isRunning} />
             </div>
+            {task && <ActualTask task={task}/>}
         </div>
     );
 }
 
-export function TimerButton({ onClickHandler }: timerButtonProps) {
-    return (
-        <div className="flex justify-center items-center w-full">
-            <button
-                onClick={onClickHandler}
-                className="flex items-center justify-center py-1 px-6 bg-gray-500 bg-opacity-50 hover:bg-gray-700 hover:bg-opacity-50 active:bg-black active:bg-opacity-50"
-            >
-                <PlayIcon className="w-16 h-16" />
-            </button>
-        </div>
-    );
-}
