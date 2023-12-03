@@ -23,7 +23,8 @@ export default function Stack({ tasks, setTasks }: StackProps) {
             time: 0,
             description: "",
         };
-
+        console.log("Console: Task was created");
+        console.log(newTask);
         setTasks([...tasks, newTask]);
     }
 
