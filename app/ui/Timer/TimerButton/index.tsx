@@ -11,9 +11,9 @@ export function TimerButton({ onClickHandler, isPlaying }: timerButtonProps) {
         <div className="flex justify-center items-center w-full">
             <button
                 onClick={onClickHandler}
-                className="flex items-center justify-center py-1 px-6 bg-gray-500 bg-opacity-50 hover:bg-gray-700 hover:bg-opacity-50 active:bg-black active:bg-opacity-50"
+                className="drop-shadow-2xl shadow-slate-600 rounded-md shadow-md flex items-center justify-center px-8 py-2 bg-slate-600 bg-opacity-50 hover:bg-gray-900 hover:bg-opacity-50 active:bg-black active:bg-opacity-50"
             >
-                {isPlaying ? <PauseIcon className="w-16 h-16" /> : <PlayIcon className="w-16 h-16" />}
+                {isPlaying ? <PauseIcon className="drop-shadow-2xl shadow-2xl w-12 h-12" /> : <PlayIcon className="drop-shadow-2xl w-12 h-12" />}
             </button>
         </div>
     );

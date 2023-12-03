@@ -22,6 +22,12 @@ interface TaskTimerProps {
     timeParserFunc: (value: string) => string
 }
 
+interface TimeInputProps {
+    hideAndSetTime: () => void
+    handleOnInput: () => void
+    inputTime: number
+}
+
 export default function Task({ task, onUpdateTask }: TaskProps) {
 
     const [isOpen, setIsOpen] = useState(false);
@@ -44,6 +50,29 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
         onUpdateTask(newTask);        
     }
 
+    function parseAndSetTime(value: string) {
+        
+        if (value.includes(":")){
+            let time = value.split(":");
+            setMinutes(time[0]);
+            setSeconds(time[1]);
+            return;
+        }
+
+        setMinutes(convertSecToTime(value)[0]);
+        setSeconds(convertSecToTime(value)[1]);
+    }
+
+    function convertSecToTime(timeSecs: string) {
+
+        let timeNum = parseInt(timeSecs);
+
+        let minutes = Math.floor(timeNum / 60).toString();
+        let seconds = (timeNum % 60).toString();
+
+        return [minutes, seconds]
+    }
+
     function parseTimeTo2Digits(value: string) {
         console.log(minutes+":"+seconds);
         var time = value.substring(value.length-2, value.length);
@@ -58,14 +87,16 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
         <div className="w-[300px] h-fit flex flex-col border-2 border-black rounded-md">
             <div
                 // onClick={() => setIsOpen(!isOpen)}
-                className="cursor-pointer p-2 flex flex-row justify-between text-white bg-gray-600 bg-opacity-40"
+                className="cursor-pointer p-2 flex flex-row justify-between text-white bg-gray-400"
             >
                 
                 <input onBlur={updateTask} value={title} onChange={(e) => setTitle(e.target.value)} className="bg-transparent outline-none [appearance:textfield]"/>
-                <div className="flex px-1 bg-white bg-opacity-30 rounded-md">
-                    <TaskTimer timeParserFunc={parseTimeTo2Digits} UpdateTask={updateTask} shownValue={minutes} setTimeFunc={setMinutes}/>
-                    <span>:</span>
-                    <TaskTimer timeParserFunc={parseTimeTo2Digits} UpdateTask={updateTask} shownValue={seconds} setTimeFunc={setSeconds}/>
+                <div className="flex px-1 bg-slate-200 rounded-md">
+                    <a onClick={} className="flex justify-evenly w-full h-full">
+                        <div className="text-black">{minutes}</div>
+                        <div className="text-black">:</div>
+                        <div className="text-black">{seconds}</div>
+                    </a>
                 </div>
             </div>
             {isOpen ? (
@@ -75,9 +106,23 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
     );
 }
 
-export function TaskTimer({setTimeFunc, UpdateTask, timeParserFunc, shownValue} : TaskTimerProps) {
+export function TimeInput({ hideAndSetTime } : TimeInputProps) {
+
+    let inputTime = 0;
+
+    function handleOnInput (value: number) {
+        if (value > 3540) {
+            inputTime = 3540;
+        } else if (value < 0) {
+            inputTime = 0;
+        } else {
+            inputTime = value;
+        }
+    }
 
     return (
-        <input type="number" className="bg-transparent outline-none w-5 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" onBlur={UpdateTask} value={shownValue} onChange={(e) => setTimeFunc(timeParserFunc(e.target.value))} min={0} max={59} maxLength={2}/>
-    )
+        <form onSubmit={hideAndSetTime}>
+            <input type="number" onChange={(e) => handleOnInput(e.target.value)} maxLength={4} max={3540} min={0} value={inputTime} className="text-slate-900 bg-transparent outline-none w-10 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" />
+        </form>
+    );
 }

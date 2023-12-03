@@ -26,7 +26,7 @@ export default function TaskManager() {
 
   return (
     <>
-      <Stack tasks={runTasks} setTasks={setRunTasks}/>
+      <Stack tasks={runTasks} setTasks={setRunTasks} />
       <div className='flex justify-center items-center w-4/5 h-full'>
         <Timer onFinishTask={onFinishTask} onNextTask={onNextTask} task={currentTask} />
       </div>

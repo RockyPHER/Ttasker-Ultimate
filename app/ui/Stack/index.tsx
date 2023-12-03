@@ -9,13 +9,13 @@ interface StackProps {
     setTasks: React.Dispatch<React.SetStateAction<ITask[]>>;
 }
 
-export default function Stack({ tasks, setTasks}: StackProps) {
+export default function Stack({ tasks, setTasks }: StackProps) {
 
     const mockStackName = "Stack";
 
     const [stackName, setStackName] = useState(mockStackName);
 
-    function onCreateTask () {
+    function onCreateTask() {
 
         const newTask: ITask = {
             id: Date.now().toString(),
@@ -32,11 +32,9 @@ export default function Stack({ tasks, setTasks}: StackProps) {
     }
 
     return (
-        <div className="flex flex-col items-center justify-between w-[320px] h-full border-2 border-black">
-            <div className="flex justify-center items-center w-full h-[70px]"><h1 className="text-3xl">{stackName}</h1></div>
-            <div className="w-full h-full flex justify-center space-y-2">
-            </div>
-            <div className="flex flex-col space-y-2">
+        <div className="flex flex-col items-center justify-between w-[320px] h-full border-x-2 border-black">
+            <div className="flex justify-center items-center w-full h-[70px] mb-2"><h1 className="text-3xl">{stackName}</h1></div>
+            <div className="flex flex-col h-full space-y-2">
                 {tasks && tasks.map((task) => (
                     <Task
                         onUpdateTask={onUpdateTask}

@@ -92,15 +92,17 @@ export default function Timer({ task, onNextTask, onFinishTask }: TimerProps) {
 
     return (
         <div className="flex flex-col space-y-5">
-            <div className="select-none w-auto h-[26vh] px-4 flex items-center justify-center bg-gray-600 bg-opacity-50 ">
-                <span className="text-[25vh]">{minutes}</span>
-                <span className="text-[25vh]">:</span>
-                <span className="text-[25vh]">{seconds}</span>
+            <div className="select-none w-auto h-[26vh] px-4 flex items-center justify-center shadow-lg shadow-slate-600 bg-gray-400 rounded-3xl bg-opacity-50 ">
+                <span className="text-gray-200 drop-shadow-xl text-[25vh]">{minutes}</span>
+                <span className="text-gray-200 drop-shadow-xl text-[25vh]">:</span>
+                <span className="text-gray-200 drop-shadow-xl text-[25vh]">{seconds}</span>
             </div>
             <div>
                 <TimerButton onClickHandler={playButtonHandler} isPlaying={isRunning} />
             </div>
-            {task && <ActualTask task={task}/>}
+            <div className="flex w-full justify-center">
+                {task && <ActualTask task={task}/>}
+            </div>
         </div>
     );
 }
