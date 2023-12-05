@@ -48,7 +48,7 @@ export default function Timer({ task, onNextTask, onFinishTask }: TimerProps) {
         return () => {
             intervalId ? clearInterval(intervalId) : null;
         };
-    }, [isRunning, time, taskTime]);
+    }, [isRunning, time, taskTime, onFinishTask]);
 
     //Timer Display
     useEffect(() => {

@@ -79,7 +79,7 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
     }
 
     return (
-        <div className="w-[300px] h-fit flex flex-col border-2 border-black rounded-md">
+        <div className="overflow-hidden w-[300px] h-fit flex flex-col border-2 border-black rounded-md">
             <div className="cursor-pointer p-2 flex flex-row justify-between text-white bg-gray-400">
                 <div className="flex justify-between w-full h-full">
                     <a onClick={() => setShowTitleInput(true)}>
@@ -88,8 +88,8 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
                         </div>
                     </a>
                     <a>
-                        <div className=" flex justify-center items-center pr-1 w-max h-full">
-                            <MoreIcon onClick={() => setDescIsOpen(!descIsOpen)} className=" w-7 h-7"/>
+                        <div className="flex justify-center items-center translate-y-[1px] pr-1 w-max h-full">
+                            <MoreIcon onClick={() => setDescIsOpen(!descIsOpen)} className="hover:bg-gray-300 fill-black active:bg-slate-500 rounded-full w-7 h-7"/>
                         </div>
                     </a>
                 </div>

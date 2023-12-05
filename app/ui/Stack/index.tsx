@@ -44,7 +44,7 @@ export default function Stack({ tasks, setTasks }: StackProps) {
                     />
                 ))}
             </div>
-            <a onClick={onCreateTask} className="cursor-pointer flex justify-center items-center active:bg-gradient-to-b hover:bg-gradient-to-b from-transparent hover:to-slate-600 active:to-slate-900 w-full p-2">
+            <a onClick={onCreateTask} className="transition delay-100 ease-in-out cursor-pointer flex justify-center items-center active:bg-gradient-to-b hover:bg-gradient-to-b from-transparent hover:to-slate-600 active:to-slate-900 w-full p-2">
                 <PlusIcon className="w-16 h-16" />
             </a>
         </div>
