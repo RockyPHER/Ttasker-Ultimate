@@ -13,6 +13,9 @@ export interface ITask {
 interface TaskProps {
     task: ITask;
     onUpdateTask: (task: ITask) => void;
+    onHover: (task: ITask["id"], isHovered: boolean) => boolean;
+    onFocus: (task: ITask["id"], isFocused: boolean) => boolean;
+    setFocusedTaskId: Dispatch<SetStateAction<string>>;
 }
 
 interface TaskTimeComponentProps {
@@ -29,7 +32,10 @@ interface TaskTimeInputProps {
 
 }
 
-export default function Task({ task, onUpdateTask }: TaskProps) {
+export default function Task({ task, onFocus, setFocusedTaskId, onUpdateTask }: TaskProps) {
+
+    const [isHovered, setIsHovered] = useState(false);
+    let onHover = false;
 
     const [descIsOpen, setDescIsOpen] = useState(false);
     const [showTimeInput, setShowTimeInput] = useState(false);
@@ -56,10 +62,22 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
         onUpdateTask(newTask);
     }
 
+    function onHoverHandler(isHovered: boolean) {
+        onHover = isHovered;
+        setIsHovered(isHovered);
+    }
+
+    function checkIfHoverIsUpdate () {
+        if (isHovered !== onHover) {
+            setIsHovered(onHover);
+        }
+    }
+
     useEffect(() => {
         checkIfTaskValueIsUpdated();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [updateTask] )
+        checkIfHoverIsUpdate();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [updateTask, onHoverHandler])
 
     function checkIfTaskValueIsUpdated() {
         if (title !== task.title || description !== task.description || minutes !== initialMinutes || seconds !== initialSeconds) {
@@ -79,7 +97,7 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
     }
 
     return (
-        <div className="overflow-hidden w-[300px] h-fit flex flex-col border-2 border-black rounded-md">
+        <div onMouseEnter={() => onHoverHandler(true)} onMouseLeave={() => onHoverHandler(false)} onClick={() => setFocusedTaskId(task.id)} className={`overflow-hidden w-[300px] h-fit flex flex-col border-2 border-black rounded-md ${isHovered ? "bg-black" : "bg-gray-300"}`}>
             <div className="cursor-pointer p-2 flex flex-row justify-between text-white bg-gray-400">
                 <div className="flex justify-between w-full h-full">
                     <a onClick={() => setShowTitleInput(true)}>
@@ -143,13 +161,13 @@ export function TaskTimeInput({ updateTask, setMinutes, setSeconds, setShowTimeI
 
     function hideAndSetTime() {
 
-        let minutes : string
-        let seconds : string
+        let minutes: string
+        let seconds: string
 
         if (inputTime) {
             console.log("Console: Time was set");
             console.log(inputTime);
-            
+
             minutes = convertSecToTime(inputTime)[0];
             seconds = convertSecToTime(inputTime)[1];
 

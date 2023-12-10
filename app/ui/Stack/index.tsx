@@ -15,6 +15,9 @@ export default function Stack({ tasks, setTasks }: StackProps) {
 
     const [stackName, setStackName] = useState(mockStackName);
 
+    const [focusedTaskId, setFocusedTaskId] = useState("");
+    const [focusedTask, setFocusedTask] = useState<ITask | null>(null);
+    
     function onCreateTask() {
 
         const newTask: ITask = {
@@ -38,15 +41,19 @@ export default function Stack({ tasks, setTasks }: StackProps) {
             <div className="flex flex-col h-full space-y-2">
                 {tasks && tasks.map((task) => (
                     <Task
+                        onHover={}
+                        onFocus={onFocusHandler}
+                        setFocusedTaskId={setFocusedTaskId}
                         onUpdateTask={onUpdateTask}
                         key={task.id}
                         task={task}
                     />
                 ))}
             </div>
-            <a onClick={onCreateTask} className="transition delay-100 ease-in-out cursor-pointer flex justify-center items-center active:bg-gradient-to-b hover:bg-gradient-to-b from-transparent hover:to-slate-600 active:to-slate-900 w-full p-2">
+            <button onClick={onCreateTask} className="transition-all delay-200 cursor-pointer flex justify-center items-center bg-gradient-to-b from-transparent hover:to-slate-600 active:to-slate-900 w-full p-2">
                 <PlusIcon className="w-16 h-16" />
-            </a>
+            </button>
+
         </div>
     );
 }
