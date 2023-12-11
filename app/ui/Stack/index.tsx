@@ -15,9 +15,6 @@ export default function Stack({ tasks, setTasks }: StackProps) {
 
     const [stackName, setStackName] = useState(mockStackName);
 
-    const [focusedTaskId, setFocusedTaskId] = useState("");
-    const [focusedTask, setFocusedTask] = useState<ITask | null>(null);
-    
     function onCreateTask() {
 
         const newTask: ITask = {
@@ -25,14 +22,18 @@ export default function Stack({ tasks, setTasks }: StackProps) {
             title: "",
             time: 0,
             description: "",
+            isFocused: false,
+            isHovered: false
         };
+
         console.log("Console: Task was created");
         console.log(newTask);
+
         setTasks([...tasks, newTask]);
     }
 
-    function onUpdateTask(task: ITask) {
-        setTasks(tasks.map((t) => t.id === task.id ? task : t));
+    function onUpdateTask(updatedTask: ITask) {
+        setTasks(tasks.map((prevTask) => prevTask.id === updatedTask.id ? updatedTask : prevTask));
     }
 
     return (
@@ -41,9 +42,6 @@ export default function Stack({ tasks, setTasks }: StackProps) {
             <div className="flex flex-col h-full space-y-2">
                 {tasks && tasks.map((task) => (
                     <Task
-                        onHover={}
-                        onFocus={onFocusHandler}
-                        setFocusedTaskId={setFocusedTaskId}
                         onUpdateTask={onUpdateTask}
                         key={task.id}
                         task={task}

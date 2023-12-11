@@ -8,14 +8,13 @@ export interface ITask {
     title: string;
     time: number;
     description: string;
+    isFocused?: boolean;
+    isHovered?: boolean;
 }
 
 interface TaskProps {
     task: ITask;
     onUpdateTask: (task: ITask) => void;
-    onHover: (task: ITask["id"], isHovered: boolean) => boolean;
-    onFocus: (task: ITask["id"], isFocused: boolean) => boolean;
-    setFocusedTaskId: Dispatch<SetStateAction<string>>;
 }
 
 interface TaskTimeComponentProps {
@@ -32,10 +31,7 @@ interface TaskTimeInputProps {
 
 }
 
-export default function Task({ task, onFocus, setFocusedTaskId, onUpdateTask }: TaskProps) {
-
-    const [isHovered, setIsHovered] = useState(false);
-    let onHover = false;
+export default function Task({ task, onUpdateTask }: TaskProps) {
 
     const [descIsOpen, setDescIsOpen] = useState(false);
     const [showTimeInput, setShowTimeInput] = useState(false);
@@ -47,13 +43,17 @@ export default function Task({ task, onFocus, setFocusedTaskId, onUpdateTask }: 
     const [minutes, setMinutes] = useState(initialMinutes);
     const [seconds, setSeconds] = useState(initialSeconds);
     const [description, setDescription] = useState(task.description);
-
+    const [isFocused, setIsFocused] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    
     function updateTask() {
         var newTask: ITask = {
             id: task.id,
             title: title,
             time: parseTimeStringToMs(minutes, seconds),
-            description: description
+            description: description,
+            isFocused: isFocused,
+            isHovered: isHovered
         };
 
         console.log("Console: Task was updated");
@@ -62,25 +62,22 @@ export default function Task({ task, onFocus, setFocusedTaskId, onUpdateTask }: 
         onUpdateTask(newTask);
     }
 
-    function onHoverHandler(isHovered: boolean) {
-        onHover = isHovered;
-        setIsHovered(isHovered);
+    function onClickHandler () {
+        setIsFocused(true);
+        updateTask();
     }
-
-    function checkIfHoverIsUpdate () {
-        if (isHovered !== onHover) {
-            setIsHovered(onHover);
-        }
+    function onBlurHandler() {
+        setIsFocused(false);
+        updateTask();
     }
 
     useEffect(() => {
         checkIfTaskValueIsUpdated();
-        checkIfHoverIsUpdate();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [updateTask, onHoverHandler])
+    }, [updateTask])
 
     function checkIfTaskValueIsUpdated() {
-        if (title !== task.title || description !== task.description || minutes !== initialMinutes || seconds !== initialSeconds) {
+        if (title !== task.title || description !== task.description || minutes !== initialMinutes || seconds !== initialSeconds || isFocused !== task.isFocused || isHovered !== task.isHovered) {
             updateTask();
         }
     }
@@ -97,7 +94,7 @@ export default function Task({ task, onFocus, setFocusedTaskId, onUpdateTask }: 
     }
 
     return (
-        <div onMouseEnter={() => onHoverHandler(true)} onMouseLeave={() => onHoverHandler(false)} onClick={() => setFocusedTaskId(task.id)} className={`overflow-hidden w-[300px] h-fit flex flex-col border-2 border-black rounded-md ${isHovered ? "bg-black" : "bg-gray-300"}`}>
+        <div onBlur={() => onBlurHandler()} onClick={() => onClickHandler()} className={`overflow-hidden w-[300px] h-fit flex flex-col border-2 border-black rounded-md ${isFocused ? "outline outline-2 outline-white" : ""}`}>
             <div className="cursor-pointer p-2 flex flex-row justify-between text-white bg-gray-400">
                 <div className="flex justify-between w-full h-full">
                     <a onClick={() => setShowTitleInput(true)}>
