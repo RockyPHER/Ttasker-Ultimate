@@ -32,6 +32,10 @@ export default function Stack({ tasks, setTasks }: StackProps) {
         setTasks([...tasks, newTask]);
     }
 
+    function onRemoveTask(task: ITask) {
+        setTasks(tasks.filter((prevTask) => prevTask.id !== task.id));
+    }
+
     function onUpdateTask(updatedTask: ITask) {
         setTasks(tasks.map((prevTask) => prevTask.id === updatedTask.id ? updatedTask : prevTask));
     }
@@ -42,6 +46,7 @@ export default function Stack({ tasks, setTasks }: StackProps) {
             <div className="flex flex-col h-full space-y-2">
                 {tasks && tasks.map((task) => (
                     <Task
+                        onRemoveTask={onRemoveTask}
                         onUpdateTask={onUpdateTask}
                         key={task.id}
                         task={task}

@@ -1,7 +1,7 @@
 "use client";
 
 import { parseTimeMsToString, parseTimeStringToMs } from "@/scripts/taskUtils";
-import { useState, useEffect, SetStateAction, Dispatch } from "react";
+import { useState, useEffect, SetStateAction, Dispatch, useCallback } from "react";
 import MoreIcon from "@/icons/more.svg"
 export interface ITask {
     id: string;
@@ -15,6 +15,7 @@ export interface ITask {
 interface TaskProps {
     task: ITask;
     onUpdateTask: (task: ITask) => void;
+    onRemoveTask: (task: ITask) => void;
 }
 
 interface TaskTimeComponentProps {
@@ -31,7 +32,7 @@ interface TaskTimeInputProps {
 
 }
 
-export default function Task({ task, onUpdateTask }: TaskProps) {
+export default function Task({ task, onUpdateTask, onRemoveTask }: TaskProps) {
 
     const [descIsOpen, setDescIsOpen] = useState(false);
     const [showTimeInput, setShowTimeInput] = useState(false);
@@ -39,13 +40,13 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
 
     const [initialMinutes, initialSeconds] = parseTimeMsToString(task.time);
 
-    const [title, setTitle] = useState(task.title);
-    const [minutes, setMinutes] = useState(initialMinutes);
-    const [seconds, setSeconds] = useState(initialSeconds);
-    const [description, setDescription] = useState(task.description);
-    const [isFocused, setIsFocused] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
-    
+    const [title, setTitle] = useState<string>(task.title);
+    const [minutes, setMinutes] = useState<string>(initialMinutes);
+    const [seconds, setSeconds] = useState<string>(initialSeconds);
+    const [description, setDescription] = useState<string>(task.description);
+    const [isFocused, setIsFocused] = useState<boolean>(false);
+    const [isHovered, setIsHovered] = useState<boolean>(false);
+
     function updateTask() {
         var newTask: ITask = {
             id: task.id,
@@ -62,7 +63,21 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
         onUpdateTask(newTask);
     }
 
-    function onClickHandler () {
+    const onKeyDown = useCallback((event: { key: string; }) => {
+        console.log("Console: Keypressed");
+        if (isFocused && event.key === "Delete") {
+            onRemoveTask(task);
+        }
+    }, [isFocused, onRemoveTask, task]);
+
+    useEffect(() => {
+        window.addEventListener("keydown", onKeyDown);
+        return () => {
+            window.removeEventListener("keydown", onKeyDown);
+        };
+    }, [onKeyDown]);
+
+    function onClickHandler() {
         setIsFocused(true);
         updateTask();
     }
@@ -99,12 +114,12 @@ export default function Task({ task, onUpdateTask }: TaskProps) {
                 <div className="flex justify-between w-full h-full">
                     <a onClick={() => setShowTitleInput(true)}>
                         <div className="flex justify-center items-center w-full h-full">
-                            {showTitleInput ? <input autoFocus type="text" maxLength={20} onBlur={() => {setShowTitleInput(false); updateTask()}} value={title} onChange={(e) => setTitle(e.target.value)} className="w-min bg-transparent outline-none [appearance:textfield]" /> : <div className="">{title}</div>}
+                            {showTitleInput ? <input autoFocus type="text" maxLength={20} onBlur={() => { setShowTitleInput(false); updateTask() }} value={title} onChange={(e) => setTitle(e.target.value)} className="w-min bg-transparent outline-none [appearance:textfield]" /> : <div className="">{title}</div>}
                         </div>
                     </a>
                     <a>
                         <div className="flex justify-center items-center translate-y-[1px] pr-1 w-max h-full">
-                            <MoreIcon onClick={() => setDescIsOpen(!descIsOpen)} className="hover:bg-gray-300 fill-black active:bg-slate-500 rounded-full w-7 h-7"/>
+                            <MoreIcon onClick={() => setDescIsOpen(!descIsOpen)} className="hover:bg-gray-300 fill-black active:bg-slate-500 rounded-full w-7 h-7" />
                         </div>
                     </a>
                 </div>
