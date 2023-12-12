@@ -28,7 +28,7 @@ interface TaskTimeInputProps {
     setSeconds: Dispatch<SetStateAction<string>>
     setShowTimeInput: Dispatch<SetStateAction<boolean>>
     updateTask: () => void
-    convertSecToTime: (value: number) => string[]
+    convertInputToTime: (value: number) => string[]
 
 }
 
@@ -97,7 +97,7 @@ export default function Task({ task, onUpdateTask, onRemoveTask }: TaskProps) {
         }
     }
 
-    function convertSecToTime(timeNum: number): string[] {
+    function convertInputToTime(timeNum: number): string[] {
 
         let minutes = Math.floor(timeNum / 60).toString();
         let seconds = (timeNum % 60).toString();
@@ -125,7 +125,7 @@ export default function Task({ task, onUpdateTask, onRemoveTask }: TaskProps) {
                 </div>
                 <div className="flex px-1 bg-gray-200 rounded-md">
                     <a onClick={() => setShowTimeInput(true)} className="flex justify-evenly w-full h-full">
-                        {showTimeInput ? <TaskTimeInput updateTask={updateTask} setMinutes={setMinutes} setSeconds={setSeconds} setShowTimeInput={setShowTimeInput} convertSecToTime={convertSecToTime} /> : <TaskTimeComponent minutes={minutes} seconds={seconds} />}
+                        {showTimeInput ? <TaskTimeInput updateTask={updateTask} setMinutes={setMinutes} setSeconds={setSeconds} setShowTimeInput={setShowTimeInput} convertInputToTime={convertInputToTime} /> : <TaskTimeComponent minutes={minutes} seconds={seconds} />}
                     </a>
                 </div>
             </div>
@@ -149,7 +149,7 @@ export function TaskTimeComponent({ minutes, seconds }: TaskTimeComponentProps) 
     );
 }
 
-export function TaskTimeInput({ updateTask, setMinutes, setSeconds, setShowTimeInput, convertSecToTime }: TaskTimeInputProps) {
+export function TaskTimeInput({ updateTask, setMinutes, setSeconds, setShowTimeInput, convertInputToTime }: TaskTimeInputProps) {
 
     const [inputTime, setInputTime] = useState<number>();
 
@@ -180,8 +180,8 @@ export function TaskTimeInput({ updateTask, setMinutes, setSeconds, setShowTimeI
             console.log("Console: Time was set");
             console.log(inputTime);
 
-            minutes = convertSecToTime(inputTime)[0];
-            seconds = convertSecToTime(inputTime)[1];
+            minutes = convertInputToTime(inputTime)[0];
+            seconds = convertInputToTime(inputTime)[1];
 
             setMinutes(minutes);
             setSeconds(seconds);

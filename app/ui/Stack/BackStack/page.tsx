@@ -2,18 +2,27 @@
 
 import { useState } from "react";
 import PlusIcon from "@/icons/plus.svg";
-import Task, { ITask } from "@/components/Task";
+import Task, { ITask } from "@/components/Task/page";
 
-interface StackProps {
+interface BackStackProps {
     tasks: ITask[];
     setTasks: React.Dispatch<React.SetStateAction<ITask[]>>;
 }
 
-export default function Stack({ tasks, setTasks }: StackProps) {
+export default function Stack({ tasks, setTasks }: BackStackProps) {
 
     const mockStackName = "Stack";
 
     const [stackName, setStackName] = useState(mockStackName);
+
+    const tasksComponents = tasks && tasks.map((task) => (
+        <Task
+            onRemoveTask={onRemoveTask}
+            onUpdateTask={onUpdateTask}
+            key={task.id}
+            task={task}
+        />
+    ))
 
     function onCreateTask() {
 
@@ -44,14 +53,7 @@ export default function Stack({ tasks, setTasks }: StackProps) {
         <div className="flex flex-col items-center justify-between w-[320px] h-full border-x-2 border-black">
             <div className="flex justify-center items-center w-full h-[70px] mb-2"><h1 className="text-3xl">{stackName}</h1></div>
             <div className="flex flex-col h-full space-y-2">
-                {tasks && tasks.map((task) => (
-                    <Task
-                        onRemoveTask={onRemoveTask}
-                        onUpdateTask={onUpdateTask}
-                        key={task.id}
-                        task={task}
-                    />
-                ))}
+                {tasksComponents}
             </div>
             <button onClick={onCreateTask} className="transition-all delay-200 cursor-pointer flex justify-center items-center bg-gradient-to-b from-transparent hover:to-slate-600 active:to-slate-900 w-full p-2">
                 <PlusIcon className="w-16 h-16" />

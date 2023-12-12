@@ -3,17 +3,19 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { parseTimeMsToString, parseTimeStringToMs } from "@/scripts/taskUtils";
-import { TimerButton } from "./TimerButton";
-import { ITask } from "../Task";
-import ActualTask from "../ActualTask";
+import { TimerButton } from "../SystemController/page";
+import { ITask } from "../Task/page";
+import ActualTask from "../ActualTask/page";
 
 interface TimerProps {
     task: ITask | null;
     onNextTask: () => void;
     onFinishTask: () => void;
+    onStartButton: () => void;
 }
 
-export default function Timer({ task, onNextTask, onFinishTask }: TimerProps) {
+export default function Timer({ task, onNextTask, onFinishTask, onStartButton}: TimerProps) {
+    
     const taskTime = task?.time;
 
     const [minutes, setMinutes] = useState("00");
@@ -55,15 +57,6 @@ export default function Timer({ task, onNextTask, onFinishTask }: TimerProps) {
         setMinutes(parseTimeMsToString(time)[0]);
         setSeconds(parseTimeMsToString(time)[1]);
     }, [time]);
-
-    function getTaskTimeMs(taskTime: [string, string]): number {
-        const taskMinutes = taskTime[0];
-        const taskSeconds = taskTime[1];
-
-        const taskTimeMs = parseTimeStringToMs(taskMinutes, taskSeconds);
-
-        return taskTimeMs;
-    }
 
     function playButtonHandler() {
         console.log("Console: Button was clicked");
