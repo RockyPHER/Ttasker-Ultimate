@@ -15,8 +15,8 @@ interface TimerProps {
 }
 
 export default function Timer({ task, onNextTask, onFinishTask, onStartButton}: TimerProps) {
-    
-    const taskTime = task?.time;
+
+    const actualTaskTime = task?.time;
 
     const [minutes, setMinutes] = useState("00");
     const [seconds, setSeconds] = useState("00");
@@ -50,7 +50,7 @@ export default function Timer({ task, onNextTask, onFinishTask, onStartButton}: 
         return () => {
             intervalId ? clearInterval(intervalId) : null;
         };
-    }, [isRunning, time, taskTime, onFinishTask]);
+    }, [isRunning, time, actualTaskTime, onFinishTask]);
 
     //Timer Display
     useEffect(() => {
@@ -91,7 +91,7 @@ export default function Timer({ task, onNextTask, onFinishTask, onStartButton}: 
                 <span className="text-gray-200 drop-shadow-xl text-[25vh]">{seconds}</span>
             </div>
             <div>
-                <TimerButton onClickHandler={playButtonHandler} isPlaying={isRunning} />
+                <TimerButton onStartRunHandler={onStartButton} onPlayHandler={playButtonHandler} isPlaying={isRunning} />
             </div>
             <div className="flex w-full justify-center">
                 {task && <ActualTask task={task}/>}

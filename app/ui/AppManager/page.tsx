@@ -33,11 +33,11 @@ export default function AppManager() {
 
   return (
     <>
-      <RunStack tasks={runTasks} />
-      <div className='flex justify-center items-center w-4/5 h-full'>
-        <Timer onStartButton={startRoutine} onFinishTask={onFinishTask} onNextTask={onNextTask} task={currentTask} />
-      </div>
       <BackStack tasks={backTasks} setTasks={setBackTasks} />
+      <div className='flex justify-center items-center w-4/5 h-full'>
+        <Timer task={currentTask} onStartButton={startRoutine} onFinishTask={onFinishTask} onNextTask={onNextTask} />
+      </div>
+      <RunStack tasks={runTasks} />
     </>
   );
 

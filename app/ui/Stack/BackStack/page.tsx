@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from "react";
 import PlusIcon from "@/icons/plus.svg";
 import Task, { ITask } from "@/components/Task/page";
 
@@ -11,9 +10,7 @@ interface BackStackProps {
 
 export default function Stack({ tasks, setTasks }: BackStackProps) {
 
-    const mockStackName = "Stack";
-
-    const [stackName, setStackName] = useState(mockStackName);
+    const stackName = "BackStack";
 
     const tasksComponents = tasks && tasks.map((task) => (
         <Task
