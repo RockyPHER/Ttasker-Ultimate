@@ -13,6 +13,12 @@ export default function AppManager() {
   const [backTasks, setBackTasks] = useState<ITask[]>([]);
 
   function startRoutine () {
+    if(backTasks.length === 0) {
+      return;
+    }
+    if(runTasks.length !== 0) {
+      return;
+    }
     setRunTasks(backTasks)
     setBackTasks([])
   }
@@ -21,14 +27,13 @@ export default function AppManager() {
     if (runTasks.length === 0) {
       return;
     }
-
     setCurrentTask(runTasks[0]);
     setRunTasks(runTasks.slice(1));
-
   }
 
   function onFinishTask() {
     setCurrentTask(null);
+    onNextTask();
   }
 
   return (
