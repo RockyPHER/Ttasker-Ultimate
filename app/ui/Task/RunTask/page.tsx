@@ -21,7 +21,7 @@ export default function RunTask({ task }: RunTaskProps) {
 
     const title = task.title;
     const time = task.time;
-    const minutes = parseTimeMsToString(time)[0]; 
+    const minutes = parseTimeMsToString(time)[0];
     const seconds = parseTimeMsToString(time)[1];
     const description = task.description;
 
@@ -29,9 +29,9 @@ export default function RunTask({ task }: RunTaskProps) {
         <div className={"overflow-hidden w-[300px] h-fit flex flex-col border-2 border-black rounded-md "}>
             <div className="cursor-pointer p-2 flex flex-row justify-between text-white bg-gray-400">
                 <div className="flex justify-between w-full h-full">
-                        <div className="flex justify-center items-center w-full h-full">
-                            <div className="">{title}</div>
-                        </div>
+                    <div className="flex justify-between items-center w-full h-full">
+                        <div className="">{title}</div>
+                    </div>
                     <a>
                         <div className="flex justify-center items-center translate-y-[1px] pr-1 w-max h-full">
                             <MoreIcon onClick={() => setDescIsOpen(!descIsOpen)} className="hover:bg-gray-300 fill-black active:bg-slate-500 rounded-full w-7 h-7" />
@@ -39,7 +39,7 @@ export default function RunTask({ task }: RunTaskProps) {
                     </a>
                 </div>
                 <div className="flex px-1 bg-gray-200 rounded-md">
-                        <TaskTimeComponent minutes={minutes} seconds={seconds} />
+                    <TaskTimeComponent minutes={minutes} seconds={seconds} />
                 </div>
             </div>
             <div className="w-full h-fit flex">

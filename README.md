@@ -1,6 +1,8 @@
 # Ttasker Ultimate
 
-![FirstVersion](/public/prints/firstVersion.png)
+| First Version | Last Version |
+| :-----------: | :----------: |
+|![FirstVersion](/public/prints/firstVersion.png)|![LastVersion](/public/prints/TtaskerUltimate.png)|
 
 ## What is Ttasker?
 
