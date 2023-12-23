@@ -1,7 +1,7 @@
 'use client'
 
 import PlusIcon from "@/icons/plus.svg";
-import Task, { ITask } from "@/components/Task/page";
+import Task, { ITask } from "../Task/ITask";
 
 interface BackStackProps {
     tasks: ITask[];

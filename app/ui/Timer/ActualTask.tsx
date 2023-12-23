@@ -1,20 +1,13 @@
 "use client";
 
 import { parseTimeMsToString } from "@/scripts/taskUtils";
+import { ITask } from "../Task/ITask";
 
-export interface ITask {
-    id: string;
-    title: string;
-    time: number;
-    description: string;
-}
-
-interface TaskProps {
+interface ActualTaskProps {
     task: ITask;
 }
 
-
-export default function ActualTask({ task }: TaskProps) {
+export function ActualTask({ task }: ActualTaskProps) {
 
     const [minutes, seconds] = parseTimeMsToString(task.time);
 
@@ -37,4 +30,5 @@ export default function ActualTask({ task }: TaskProps) {
         </div>
     );
 }
+
 

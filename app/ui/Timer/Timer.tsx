@@ -3,9 +3,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { parseTimeMsToString, parseTimeStringToMs } from "@/scripts/taskUtils";
-import { TimerButton } from "../SystemController/page";
-import { ITask } from "../Task/page";
-import ActualTask from "../ActualTask/page";
+import { TimerButton } from "./TimerButtons";
+import { ITask } from "../Task/ITask";
+import { ActualTask } from "./ActualTask";
 
 interface TimerProps {
     task: ITask | null;
@@ -14,7 +14,7 @@ interface TimerProps {
     onStartButton: () => void;
 }
 
-export default function Timer({ task, onNextTask, onFinishTask, onStartButton}: TimerProps) {
+export default function Timer({ task, onNextTask, onFinishTask, onStartButton }: TimerProps) {
 
     const actualTaskTime = task?.time;
 
@@ -61,7 +61,7 @@ export default function Timer({ task, onNextTask, onFinishTask, onStartButton}: 
     function playButtonHandler() {
         console.log("Console: Button was clicked");
         console.log(task);
-        if (!task){
+        if (!task) {
             onNextTask();
             return;
         }
@@ -94,7 +94,7 @@ export default function Timer({ task, onNextTask, onFinishTask, onStartButton}: 
                 <TimerButton onStartRunHandler={onStartButton} onPlayHandler={playButtonHandler} isPlaying={isRunning} />
             </div>
             <div className="flex w-full justify-center">
-                {task && <ActualTask task={task}/>}
+                {task && <ActualTask task={task} />}
             </div>
         </div>
     );

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import PlusIcon from "@/icons/plus.svg";
-import { ITask } from "@/components/Task/page"
-import RunTask from "@/components/Task/RunTask/page";
+import RunTask from "../Task/ITaskRun";
+import { ITask } from "../Task/ITask";
 
 interface RunStackProps {
     tasks: ITask[];

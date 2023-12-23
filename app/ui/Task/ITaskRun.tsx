@@ -3,7 +3,7 @@
 import { parseTimeMsToString, parseTimeStringToMs } from "@/scripts/taskUtils";
 import { useState } from "react";
 import MoreIcon from "@/icons/more.svg"
-import { ITask } from "../page";
+import { ITask } from "./ITask";
 
 interface RunTaskProps {
     task: ITask;

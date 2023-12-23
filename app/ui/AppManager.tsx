@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { ITask } from "../Task/page";
-import Timer from "../Timer/page";
-import BackStack from "../Stack/BackStack/page";
-import RunStack from "../Stack/RunStack/page";
+import { ITask } from "./Task/ITask";
+import Timer from "./Timer/Timer";
+import BackStack from "./Stack/StackBack";
+import RunStack from "./Stack/StackRun";
 
 
 export default function AppManager() {
@@ -12,11 +12,11 @@ export default function AppManager() {
   const [runTasks, setRunTasks] = useState<ITask[]>([]);
   const [backTasks, setBackTasks] = useState<ITask[]>([]);
 
-  function startRoutine () {
-    if(backTasks.length === 0) {
+  function startRoutine() {
+    if (backTasks.length === 0) {
       return;
     }
-    if(runTasks.length !== 0) {
+    if (runTasks.length !== 0) {
       return;
     }
     setRunTasks(backTasks)

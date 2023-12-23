@@ -1,4 +1,4 @@
-import AppManager from './ui/AppManager/page';
+import AppManager from './ui/AppManager';
 
 export default function Home() {
 
